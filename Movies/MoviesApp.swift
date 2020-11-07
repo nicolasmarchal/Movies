@@ -2,7 +2,7 @@
 //  MoviesApp.swift
 //  Movies
 //
-//  Created by Nicolas Marchal on 07/11/2020.
+//  Created by Nicolas Marchal on 03/11/2020.
 //
 
 import SwiftUI
