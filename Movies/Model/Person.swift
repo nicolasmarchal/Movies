@@ -9,7 +9,7 @@ import Foundation
 
 
 struct Person: Identifiable {
-    var id = UUID()
+    var id: Int = 0
     var name: String
     var role: String
     var image: String = "profile"

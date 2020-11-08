@@ -58,8 +58,7 @@ fileprivate struct CardView: View {
         GeometryReader { cardGeo in
             VStack(spacing: 0) {
                 Spacer()
-                Image(movie.image)
-                    .resizable()
+                NImage(movie.image)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: cardViewProperties.imageSize.width, height:  cardViewProperties.imageSize.height)
                     .clipped()
@@ -71,6 +70,7 @@ fileprivate struct CardView: View {
                 VStack(spacing: 5) {
                     Text(movie.name).font(.appTitle)
                         .foregroundColor(.darkBlue)
+                        .multilineTextAlignment(.center)
                     HStack {
                         Image("star")
                         Text(String.init(movie.ranking)).foregroundColor(.myGray)

@@ -83,8 +83,7 @@ fileprivate struct HeaderView: View {
         GeometryReader { reader in
             let _ = headerProperties.geometryProxy = reader
             ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
-                Image(movie.image)
-                    .resizable()
+                NImage(movie.image)
                     .aspectRatio(contentMode: .fill)
                     .frame(height: getHeightForHeaderImage(reader), alignment: .center)
                     .blur(radius: headerProperties.blur)
@@ -167,9 +166,7 @@ fileprivate struct CastCrewView: View {
                 HStack(alignment: .top, spacing: 28) {
                     ForEach(cast) { person in
                         VStack(spacing: 0) {
-                            Image(person.image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
+                            NImage(person.image)
                                 .frame(width: 80, height: 80, alignment: .center)
                                 .clipShape(Circle())
                     
@@ -217,9 +214,15 @@ struct HeaderBarView: View {
 }
 
 
-struct MovieDetailsView: View {    
-    let movie: Movie
+struct MovieDetailsView: View {
+    
+    @ObservedObject var viewModel: MovieDetailsViewModel
     private let barSize: CGFloat = 100
+    
+    init(movie: Movie) {
+        self.viewModel = MovieDetailsViewModel(movie: movie)
+        self.viewModel.fetchCredit()
+    }
     
     var body: some View {
         GeometryReader { reader in
@@ -227,12 +230,12 @@ struct MovieDetailsView: View {
                 HeaderBarView(barSize: barSize).zIndex(2)
                 
                 ScrollView(.vertical, showsIndicators: false) {
-                    HeaderView(parentReader: reader, movie: movie, barSize: barSize)
+                    HeaderView(parentReader: reader, movie: viewModel.movie, barSize: barSize)
                         .zIndex(1)
                     VStack(alignment: .leading, spacing: 48) {
-                        TitleBarView(movie: movie).padding(.horizontal, 20)
-                        PlotSummaryView(movie: movie).padding(.horizontal, 20)
-                        CastCrewView(cast: movie.cast).padding(.leading, 20)
+                        TitleBarView(movie: viewModel.movie).padding(.horizontal, 20)
+                        PlotSummaryView(movie: viewModel.movie).padding(.horizontal, 20)
+                        CastCrewView(cast: viewModel.credits.cast).padding(.leading, 20)
                         
                     }
                     .padding(.top, 24)

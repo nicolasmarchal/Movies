@@ -69,11 +69,12 @@ struct FiltersView: View {
     @State private var filters: [Filter]
     @State private var selectedFilter = [Filter]()
     
-    @Binding var selectedFilterString: [String]
+    var filterSelected: ([String]) -> Void
+//    @Binding var selectedFilterString: [String]
     
-    init(filters: [String], selectedFilters: Binding<[String]>) {
+    init(filters: [String], filterSelected: @escaping ([String]) -> Void) {
         self._filters = State(initialValue: filters.map({ Filter(name: $0)}))
-        self._selectedFilterString = selectedFilters
+        self.filterSelected = filterSelected
     }
     
     var body: some View {
@@ -83,8 +84,9 @@ struct FiltersView: View {
                     FilterItemView(filter: filter, selectedFilter: $selectedFilter)
                 }
             }.padding(.horizontal, 40)
-        }.onReceive(Just(selectedFilter), perform: { _ in
-            selectedFilterString = selectedFilter.map({ $0.name })
+        }.onReceive(Just(selectedFilter), perform: { value in
+            self.filterSelected(selectedFilter.map({ $0.name }))
+//            selectedFilterString = selectedFilter.map({ $0.name })
         })
     }
 }
@@ -92,6 +94,8 @@ struct FiltersView: View {
 struct FiltersView_Previews: PreviewProvider {
     @State private var selectedFilter = []
     static var previews: some View {
-        FiltersView(filters: ["toto", "tutu", "tata", "tete", "contenue"], selectedFilters: .constant([""]))
+        FiltersView(filters: ["toto", "tutu", "tata", "tete", "contenue"], filterSelected: { filters in
+            
+        })
     }
 }
